@@ -1,28 +1,36 @@
-/*  your css code here. If applicable */
-h1{
-	text-align: center
-}
-.container{
-	text-align: center;
-}
-.cell{
-	width: 120px;
-    height: 120px;
-    border: 1px solid;
-    background-color: pink;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      text-align: center;
+      font-family: sans-serif;
+    }
 
-.board{
-	margin-left: auto;
-    margin-right: auto;
-    width: 375px;
-    height: 375px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 5px;
-	
-}
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+    }

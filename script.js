@@ -1,62 +1,99 @@
-//your JS code here. If required.
+const submitBtn = document.getElementById('submit');
+    const inputForm = document.getElementById('input-form');
+    const board = document.getElementById('board');
+    const cells = document.getElementsByClassName('cell');
+    const messageDiv = document.getElementById('message');
+    const title = document.getElementById('title');
 
-const board = document.getElementById("board");
-const cells = document.getElementsByClass("cell");
-const player1 = document.getElementById("player-1").value;
-const player2 = document.getElementById("player-2").value;
-let currentPlayer = player1;
-const playerSymbol = ["X", "O"];
-let currentSymbol = playerSymbol[0];
+    let player1 = "", player2 = "";
+    const playerSymbol = ["X", "O"];
+    let currentPlayer = "";
+    let currentSymbol = "";
 
-const turnMessage = document.createElement("div");
-turnMessage.textContent = `${currentPlayer}, you're up`;
-board.after(turnMessage);
+    const winning_combinations = [
+      [0,1,2], [3,4,5], [6,7,8], 
+      [0,3,6], [1,4,7], [2,5,8], 
+      [0,4,8], [2,4,6]
+    ];
 
-const winning_combinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-]
+    submitBtn.addEventListener('click', () => {
+      player1 = document.getElementById('player-1').value.trim();
+      player2 = document.getElementById('player-2').value.trim();
 
-for(let i=0; i< cells.length; i++){
-	cells[i].addEventlistner('click',()=>{
-		if(cells[i].textContent !== ""){
-			return
-		}
-		cells[i].textContent = currentSymbol;
-		if(checkWin(currentPlayer)){
-			turnMessage.textContent = `${currentPlayer}, congratulations you won!`
-			return 
-		}
-		if(checkTie()){
-			turnMessage.textContent = `Game tie`;
-			return
-		}
-		currentPlayer = (currentPlayer === player1)? player2 : player1
-		if(currentPlayer == player1){
-			turnMessage.textContent = `${player1}, you're up`
-		}else{
-			turnMessage.textContent = `${player2}, you're up`
-		}
-	})
-}
+      if (!player1 || !player2) {
+        alert("Please enter names for both players.");
+        return;
+      }
 
-function checkWin(currentPlayer) {
-	for (let i = 0; i < winning_combinations.length; i++) {
-		const [a, b,c] = winning_combinations[i];
-		if(cells[a].textContent)
-	}
-	
-}
+      currentPlayer = player1;
+      currentSymbol = playerSymbol[0];
 
-function startGame(){
-	//hide player 1 player 2 and startgame button
+      // Hide form, show game
+      inputForm.classList.add('hidden');
+      board.classList.remove('hidden');
+      messageDiv.classList.remove('hidden');
+      title.classList.remove('hidden');
 
-	
-	
-}
+      messageDiv.textContent = `${currentPlayer}, you're up`;
+
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].textContent = "";
+        cells[i].addEventListener('click', handleCellClick, { once: true });
+      }
+    });
+
+    function handleCellClick(e) {
+      const cell = e.target;
+      if (cell.textContent !== "") return;
+
+      cell.textContent = currentSymbol;
+
+      if (checkWin()) {
+        messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+        disableBoard();
+        return;
+      }
+
+      if (checkTie()) {
+        messageDiv.textContent = `Game tie`;
+        return;
+      }
+
+      // Switch turn
+      if (currentPlayer === player1) {
+        currentPlayer = player2;
+        currentSymbol = playerSymbol[1];
+      } else {
+        currentPlayer = player1;
+        currentSymbol = playerSymbol[0];
+      }
+
+      messageDiv.textContent = `${currentPlayer}, you're up`;
+    }
+
+    function checkWin() {
+      for (const combo of winning_combinations) {
+        const [a, b, c] = combo;
+        if (
+          cells[a].textContent === currentSymbol &&
+          cells[b].textContent === currentSymbol &&
+          cells[c].textContent === currentSymbol
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function checkTie() {
+      for (let cell of cells) {
+        if (cell.textContent === "") return false;
+      }
+      return true;
+    }
+
+    function disableBoard() {
+      for (let cell of cells) {
+        cell.removeEventListener('click', handleCellClick);
+      }
+    }
