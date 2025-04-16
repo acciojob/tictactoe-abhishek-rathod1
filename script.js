@@ -49,7 +49,7 @@ const submitBtn = document.getElementById('submit');
       cell.textContent = currentSymbol;
 
       if (checkWin()) {
-        messageDiv.textContent = `${currentPlayer}, congratulations you won!`;
+        messageDiv.textContent = `${currentPlayer} congratulations you won!`;
         disableBoard();
         return;
       }
