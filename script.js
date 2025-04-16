@@ -6,7 +6,7 @@ const submitBtn = document.getElementById('submit');
     const title = document.getElementById('title');
 
     let player1 = "", player2 = "";
-    const playerSymbol = ["X", "O"];
+    const playerSymbol = ["x", "o"];
     let currentPlayer = "";
     let currentSymbol = "";
 
